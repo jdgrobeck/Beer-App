@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Beer from "./Beer";
 import './Drinks.css'
 import Like from './Like'
+import axios from "axios";
 
 export default class Beers extends Component { 
     constructor(props) {
@@ -16,14 +17,17 @@ export default class Beers extends Component {
     }
 
     componentDidMount() {
-        console.log("component mounted")
-        fetch("https://api.punkapi.com/v2/beers")
-        .then ( (response) => response.json() )
-        .then ( (data) =>
+        console.log("component mounted");
+        axios.get("https://api.punkapi.com/v2/beers")
+          .then((response) => {
             this.setState({
-                drinks: data
-            }))
-    }
+              drinks: response.data
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+      }
 
     componentDidUpdate() {
         console.log("component updated", this.state.drinks)
